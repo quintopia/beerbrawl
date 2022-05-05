@@ -118,7 +118,7 @@ When the game is over, cluster all the blinks and long press any of them to rese
 ## EXTRA CHALLENGE:
 
 Players can mark certain squares on the board as impassable or difficult terrain (requiring two moves to cross) before the game starts. For example, each player
-could get a "lake token" to place on any square that cannot be occupied.
+could get a "puddle token" to place on any square that cannot be occupied. Or, for example, lines between squares could be marked as "cliffs" which can be crossed in only one direction, or "barricades," which can be crossed by only one player's party.
 
 ## STRATEGY IDEAS:
 
