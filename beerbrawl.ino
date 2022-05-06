@@ -316,7 +316,7 @@ void handleTeamLongPress() {
   advance = 0;
   if (moves) {
     byte tempmoves = moves;
-    handleDoubleClick();
+    handleClick();
     moves = tempmoves;
   }
 }
