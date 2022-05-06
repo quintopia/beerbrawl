@@ -7,7 +7,7 @@ A strategy game for 2 players and 12 blinks.
 Stop me if you've heard this one before. A ragtag bunch of adventurers walks into a tavern seeking a quest.
 
 The bartender says "Oh, well, there's only one treasure dungeon around here, and the entrance is right behind the bar. There's an evil
-lich down there brewing an unholy potion it plans to unleash on the population. If you get that potion back here, my alchemist friend
+lich down there brewing an unholy potion to unleash on the population. If you get that potion back here, my alchemist friend
 can deactivate it, and I'll reward you handsomely. But be warned--the potion brainwashes people to fight on his behalf, so you might meet
 fierce resistance on the way. And if they get to the counteragents in my draft cellar, we won't be able to counteract that potion!"
 
@@ -19,18 +19,18 @@ adventurers--each defending a cask of beer against an enemy they believed to be 
 ## BOARD:
 
 A 12.5" by 20" square board is needed, divided into a 5x8 grid of 2.5"x2.5" squares. 
-One can easily make one from gridded foamboard, which is sold in 15"x20" at Walmart.
-The rows of 5 are the ranks and the columns of 8 are the files. The board should be
-situated lengthwise between the players.
+It should be a non-slip material so that Blinks do not slide together and connect when they are not supposed to.
+(I acquired a non-slip shelf mat from Walmart for 5 dollars and painted lines onto it. It's a roll-up take-anywhere board!)
+The rows of 5 are the ranks and the columns of 8 are the files. The board should be situated lengthwise between the players.
 
 ## SETUP:
 
 After training, all 12 blinks will be flashing orange. Each player takes a cluster of 6. One player clicks any blink to select the blue team.
-Both players double-click any blink to go to drafting mode.
+Both players double-click any blink to go to stat set-up mode.
 
 All blinks in the cluster will show a random collection of stats:
-- Red, the strongest color, represents STRENGTH, and determines melee attack/defense power.
-- Purple, the color of magic, represents MAGIC, and determines spellcasting attack/defense power.
+- Red, the strongest color, represents STRENGTH, and determines an adventurers' melee attack/defense power.
+- Purple, the color of magic, represents MAGIC, and determines an adventurers' spellcasting attack/defense power.
 - Yellow, the color of lightning, represents SPEED, and determines how far an adventurer can move each turn.
 - Green, the color of safety, represents ARMOR, and determines how many pieces of armor an adventurer can wear.
 
@@ -40,7 +40,7 @@ to the player.
 
 Players get one minute (or some other agreed-upon period of time) to draft all their adventurers. The first player to place all their blinks
 in ready mode on the board goes first. At the end of the allotted time, all remaining unplayed blinks must be put in ready mode and placed on the board
-without any further rerolling. If players cannot decide who placed their party first, one player may promise to buy the other a drink of their choice in
+without any further rerolling. If players cannot decide who placed their blinks first, one player may promise to buy the other a drink of their choice in
 order to go first.
 
 Note that the stats-rolling process takes place in secret--neither player should know the stats of any of their opponent's adventurers. Stats
@@ -50,43 +50,39 @@ will not be visible when the blink is in ready mode.
 
 Play proceeds in turns, and each turn has two phases.
 
-The first phase is movement. The player selects and adventurer and clicks it to put it into active/movement mode. It will appear bright and
-spinning to signify it is able to move. The player may move it forward, backward, left, or right to any adjacent square. (It may not move diagonally.)
+The first phase is movement. The player selects an adventurer and clicks it to put it into active/movement mode. It will appear bright and
+spinning to signify it is able to move. The player may move it forward, backward, left, or right to any adjacent empty square. (It may not move diagonally.)
 After moving one square, the player clicks once to indicate the move is complete. The blink will either flash yellow and return to spinning (if it can be
-moved again) or flash red and return to ready (dim and breathing) mode if it cannot be moved further. The number of moves a piece gets is equal to its
-SPEED plus 1 (SPD+1). 
+moved again) or flash red and return to ready (dim and breathing) mode if it cannot be moved further. The number of moves an adventurer gets is equal to its
+SPEED plus 1 (SPD+1) since the first move is free.
 
-After the first move, all further movement is optional. A piece can be triple-clicked to return it to ready mode immediately without revealing any further
-information about the adventurer's speed.
+The first move is mandatory. After the first move, all further movement is optional. A piece can be triple-clicked to return it to ready mode immediately without revealing any further
+information about the adventurer's speed. 
 
-The second phase may consist either of combat or rearmament and is also entirely optional UNLESS the active adventurer is going to end the turn on the same
-square that it started, in which case a combat MUST take place--no turn may have no net effect on the visible game state.
-
-A player may choose to attach the adventurer that was moved to any horizontally or vertically adjacent adventurer.
+In the second phase of a turn, a player may choose to attach the adventurer that was moved to any horizontally or vertically adjacent adventurer to engage in combat or re-armament.
 
 ## COMBAT
 
 If an adventurer is attached to an adventurer from the other team, clicking it will trigger an automatic knockout battle. After the battle,
-one blink will turn sparkling green to signify victory, and the other will turn red to indicate it has been knocked unconscious. The winning adventurer remains in its square and the dead
-blink is detached and removed from the board.
+one blink will sparkle to celebrate victory, and the other will turn red and fade out to indicate it has been knocked unconscious. 
 
-Internally, this is how a battle is conducted:
+When a battle is started, all of the following happens automatically and in sequence without player intervention:
 - The adventurer that was clicked takes the first turn. It flips a coin to determine whether it will take a swing with STRENGTH or cast a spell with MAGIC.
 - If the other adventurer has more STRENGTH or MAGIC (whichever was used), it will block the attack and make a counterstrike/counterspell using the same
   stat, which will certainly succeed in scoring a hit. Otherwise (STRENGTH or MAGIC is less or equal to that of the attack), the adventurer will take the 
   hit itself.
 - When an adventurer takes a hit from a strike or spell, it sacrifices one piece of armor to block the attack.
 - If an adventurer has no remaining armor to block the attack, it dies.
-- If both adventurers survive the round, the defending adventurer becomes the attacker for the next round, and this continues until one of them dies.
+- If both adventurers survive the round, the defending adventurer becomes the attacker for the next round, and this continues until one of them goes unconscious.
 
-## REARMAMENT
+## RE-ARMAMENT
 
 If an adventurer is attached to another member of its own party, either of them can be clicked in order to cause it to try to give a piece of armor to the
 other. If it has no armor to give or the other does not have any armor slots to put it in, this will fail.
 
 An animation will be shown on both blinks regardless of which was clicked and regardless of whether a piece of armor was actually transferred. As such, it
-is possible (and recommended) to bluff about armor transfers. For example, by placing a finger on both blinks when clicking, one can hide which direction
-the armor is being moved if at all.
+is possible (and encouraged) to bluff about armor transfers. For example, by placing a finger on both blinks when clicking, one can hide which direction
+the armor is being moved, if at all.
 
 Multiple pieces of armor may be transmitted on the same turn, including back and forth, but only between the two adventurers that have been attached. Once
 all armor has been transferred, the adventurers are separated to their respective squares.
@@ -96,8 +92,18 @@ all armor has been transferred, the adventurers are separated to their respectiv
 At any time, regardless of whose turn it is, either player may pick up any of their own adventurers and double-click to have it briefly display its stats. If it
 has lost armor in a battle, this will be apparent as an unlit face.
 
-Players may also opt to allow multiple second phases per turn as a rule--for example, combat followed by immediate rearmament--as long as no further movement
+Players may also opt to allow multiple second phases per turn as a rule--for example, combat followed by immediate re-armament--as long as no further movement
 occurs.
+
+## END OF TURN
+
+Combat and re-armament are both optional actions UNLESS the active adventurer is going to end its turn on the same
+square that it started, in which case a combat MUST take place--no turn may have no net effect on the visible game state.
+
+At the end of a turn, any conscious adventurers are left in their squares and any unconscious adventurers are removed from the board and given to the player who owns them.
+
+(If a non-slip board surface is not available, flip over any Blinks on the board at the end of the turn to minimize possibiliity of accidental
+attachment.)
 
 ## REVIVEMENT
 
@@ -110,15 +116,15 @@ If a combat or rearmament action is performed in the second phase of this turn, 
 
 ## GOAL
 
-If either player has a living adventurer on their opponent's back row at the end of their opponent's turn, they win. A player can also win by eliminating
-their opponent's entire party. 
+If either player has a living adventurer on their opponent's back row at the end of their opponent's turn, they win. A player can also win by removing all of their opponent's 
+blinks from the board. 
 
 When the game is over, cluster all the blinks and long press any of them to reset the game.
 
 ## EXTRA CHALLENGE:
 
 Players can mark certain squares on the board as impassable or difficult terrain (requiring two moves to cross) before the game starts. For example, each player
-could get a "puddle token" to place on any square that cannot be occupied. Or, for example, lines between squares could be marked as "cliffs" which can be crossed in only one direction, or "barricades," which can be crossed by only one player's party.
+could get a "lake token" to place on any square that cannot be occupied.
 
 ## STRATEGY IDEAS:
 
@@ -138,7 +144,7 @@ SCOUT: 3 STRENGTH or MAGIC and 3 SPEED. Rush to a part of the board that is poor
 GLASS CANNON: 5 MAGIC or STRENGTH and 1 ARMOR. 75% chance of scoring at least one hit. Useful for taking out adventurers who are believed to have no (remaining)
 armor.
 
-MULTICLASS: 1 STRENGTH, 1 MAGIC, 4 ARMOR. Specifically designed to counter adventurers that are spec'ed entirely into STRENGTH or MAGIC. Can also be used
+MULTICLASS: 1 STRENGTH, 1 MAGIC, 4 ARMOR. Specifically designed to counter adventurers that have stats made enitrely of STRENGTH or MAGIC. Can also be used
 as a healer.
 
 ALL-ROUNDER: 3 STRENGTH or MAGIC, 2 MAGIC or STRENGTH, 1 ARMOR. Will defeat weak opponents, can be used to test their power and wear down the armor of stronger
@@ -152,4 +158,3 @@ back rank in a single turn, out of reach of any defenders.
 
 QUARTERMASTER: 6 ARMOR. If playing with the adventurer revivement rule, keep this on your second rank in front of an empty square. It can be used to
 rearmor revived adventurers as soon as they return to the board.
-
