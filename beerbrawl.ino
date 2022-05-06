@@ -70,7 +70,7 @@
 #define EMPTY -1
 #define PASS 48
 enum stat_t {STR, MAG, SPD, DEF};
-enum signals_t {ORANGETEAM, BLUETEAM, ATTACHEDFRIEND, ATTACHEDENEMY, ROLLING, REROLLING, STATS, DEAD, GOTEAM, TEAMSWAP, RECEIPT2, ROLLWAKE, REDIE, GIFT, RECEIPT};
+enum signals_t {ORANGETEAM, BLUETEAM, INERTORANGE, INERTBLUE, ATTACHEDFRIEND, ATTACHEDENEMY, ROLLING, REROLLING, STATS, DEAD, GOTEAM, TEAMSWAP, RECEIPT2, ROLLWAKE, REDIE, GIFT, RECEIPT};
 void (*render)();
 void (*handleMessages)(byte);
 void (*handleAllFacesChecked)();
@@ -311,9 +311,14 @@ void handleTeamLongPress() {
   handleLongPress = &setup;
   handleMessages = &handleInertMessages;
   handleAllFacesChecked = &handleInertAllFacesChecked;
-  setValueSentOnAllFaces(team);
+  setValueSentOnAllFaces(team+2);
   animtimer.set(0);
   advance = 0;
+  if (moves) {
+    byte tempmoves = moves;
+    handleDoubleClick();
+    moves = tempmoves;
+  }
 }
 
 void handleStatsLongPress() {
@@ -418,12 +423,12 @@ void handleInertMessages(byte f) {
 void handleInertAllFacesChecked() {
   if (numneighbors == 1) {
     byte val = getLastValueReceivedOnFace(foeface);
-    if (val > ATTACHEDENEMY) return;
+    if (val < INERTORANGE || val > ATTACHEDENEMY) return;
     handleDoubleClick = &nop;
     handleLongPress = &handleStatsDoubleClick;
     handleMessages = handleFoEMessages;
     animtimer.set(0);
-    if (val == team || val == ATTACHEDFRIEND) {
+    if (val == team+2 || val == ATTACHEDFRIEND) {
       render = &renderFriend;
       handleClick = &handleFriendClick;
       handleAllFacesChecked = &handleFriendAllFacesChecked;
@@ -460,9 +465,11 @@ void handleFriendAllFacesChecked() {
       } else {
         setValueSentOnAllFaces(GIFT);
       }
+      moves=0;
     } else if (val == RECEIPT) {
       animtimer.set(500);
       setValueSentOnAllFaces(RECEIPT2);
+      moves=0;
     } else {
       setValueSentOnAllFaces(ATTACHEDFRIEND);
     }
@@ -481,6 +488,7 @@ void handleEnemyAllFacesChecked() {
   if (numneighbors == 1 && didValueOnFaceChange(foeface)) {
     if (val == RECEIPT) {
       setValueSentOnAllFaces(RECEIPT2);
+      moves=0;
     } else if (val == RECEIPT2) {
       if (myturn) {
         myturn = 0;
@@ -489,6 +497,7 @@ void handleEnemyAllFacesChecked() {
         setValueSentOnAllFaces(RECEIPT2);
       }
     } else if (val & PASS) {
+      moves=0;
       if (val == PASS) {
         handleEnemyClick();
       } else {
@@ -524,6 +533,7 @@ void handleDeadMessages(byte f) {
   if (getLastValueReceivedOnFace(f) == ROLLWAKE) {
     handleDeadClick();
   }
+  handleInertMessages(f);
 }
 
 void handleRollwakeMessages(byte f) {
