@@ -263,6 +263,7 @@ void handleEnemyClick() {
   myturn = 1;
   byte stat = random(1);
   setValueSentOnFace((stat + 1) << 4 | stats[stat], foeface);
+  moves=0;
 }
 void handleDeadClick() {
   setValueSentOnAllFaces(ROLLWAKE);
