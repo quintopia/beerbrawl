@@ -1,6 +1,6 @@
 # BEER BRAWL
 
-A strategy game for 2 players and 12 blinks.
+A strategy game for 2 players and 12+* blinks.
 
 ## LORE:
 
@@ -25,7 +25,7 @@ The rows of 5 are the ranks and the columns of 8 are the files. The board should
 
 ## SETUP:
 
-After training, all 12 blinks will be flashing orange. Each player takes a cluster of 6. One player clicks any blink to select the blue team.
+After training, all blinks will be flashing orange. Each player takes a cluster of half the blinks. One player clicks any blink to select the blue team.
 Both players double-click any blink to go to stat set-up mode.
 
 All blinks in the cluster will show a random collection of stats:
@@ -158,3 +158,7 @@ back rank in a single turn, out of reach of any defenders.
 
 QUARTERMASTER: 6 ARMOR. If playing with the adventurer revivement rule, keep this on your second rank in front of an empty square. It can be used to
 rearmor revived adventurers as soon as they return to the board.
+
+
+*While it is possible to play with up to 15 blinks per player, it is not recommended to exceed more than 9 blinks per player. Moreover, the Revivement
+rule should be omitted or modified when using more blinks, as the game will become unreasonably long.
