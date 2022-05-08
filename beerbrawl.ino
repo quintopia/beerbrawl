@@ -518,7 +518,7 @@ void handleEnemyAllFacesChecked() {
             myturn = 0;
             render = &renderDead;
             handleClick = &handleDeadClick;
-            handleDoubleClick = &nop;
+            handleDoubleClick = &handleInertDoubleClick;
             handleMessages = &handleDeadMessages;
             handleAllFacesChecked = &nop;
             setValueSentOnAllFaces(DEAD);
