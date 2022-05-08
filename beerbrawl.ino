@@ -85,8 +85,26 @@ byte foeface;
 byte advance;
 byte numneighbors;
 byte myturn;
+byte symbol;
 Timer animtimer;
 Color statcolors[5] = {RED, MAGENTA, YELLOW, GREEN, OFF};
+byte patterns[] =
+{
+  0b00000,
+  0b00001,
+  0b00011,
+  0b00101,
+  0b01001,
+  0b11001,
+  0b00111,
+  0b10101,
+  0b111111,
+  0b111110,
+  0b111100,
+  0b111010,
+  0b110110,
+  0b100110
+};
 
 //FUNC DECLS
 void setup();
@@ -135,19 +153,24 @@ void nop();
 void rerollStats() {
   for (byte i = 0; i < 4; i++) stats[i] = 0;
   for (byte i = 0; i < 6; i++) stats[random(3)]++;
+  symbol = patterns[random(13)];
 }
 
 //RENDER FUNCS
-void renderHiding(byte brightness) {
-  setColor(dim(team ? BLUE : ORANGE, brightness - 64 + sin8_C( millis() / 10 ) / 4));
+void renderFaces(byte brightness1, byte brightness2, byte code) {
+  FOREACH_FACE(f) {
+    setColorOnFace(dim(team ? BLUE : ORANGE, code & (1 << f) ? brightness1 : brightness2), f);
+  }
+}
+void renderHiding() {
+  byte offset = sin8_C( millis() / 10 ) / 4;
+  renderFaces(160 + offset, 64 + offset, symbol);
 }
 void renderTeam() {
   if (!animtimer.isExpired()) setColor(YELLOW);
   else {
     byte offset = 245 * (millis() / 500 & 1);
-    FOREACH_FACE(f) {
-      setColorOnFace(dim(team ? BLUE : ORANGE, f % 2 ? 255 - offset : 10 + offset), f);
-    }
+    renderFaces(255 - offset, 10 + offset, 0b101010);
   }
 }
 void renderInert() {
@@ -157,7 +180,7 @@ void renderInert() {
   } else if (val > 0) {
     setColor(RED);
   } else {
-    renderHiding(128);
+    renderHiding();
   }
 }
 
@@ -180,14 +203,13 @@ void renderMoving() {
   } else if (!animtimer.isExpired()) {
     setColor(YELLOW);
   } else {
-    setColor(team ? BLUE : ORANGE);
-    setColorOnFace(dim(team ? BLUE : ORANGE, 64), (millis() / 150) % 6);
+    renderFaces(255, 64, 1 << ((millis() / 150) % 6));
   }
 }
 
 void renderFriend() {
   int c = animtimer.getRemaining();
-  renderHiding(128);
+  renderHiding();
   setColorOnFace(dim(GREEN, 128), foeface);
   if (c > 0 && c < 500) {
     for (byte i = 0; i < c / 100; i++) {
@@ -199,11 +221,11 @@ void renderFriend() {
 
 void renderEnemy() {
   if (!animtimer.isExpired()) {
-    setColor(team ? BLUE : ORANGE);
+    renderFaces(0, 255, 0);
     uint32_t millitime = millis() / 10;
     setColorOnFace(WHITE, (2 * millitime % 6) + millitime % 2);
   } else {
-    renderHiding(128);
+    renderHiding();
     setColorOnFace(dim(RED, 128), foeface);
   }
 }
@@ -212,9 +234,9 @@ void renderDead() {
   uint16_t val = animtimer.getRemaining();
   if (val > 256) setColor(dim(RED, val / 4));
   else {
-    setColor(dim(RED,64));
-    uint32_t millitime = millis()/360%48;
-    setColorOnFace(dim(team ? BLUE : ORANGE, 150-3*(millitime%8)), millitime / 8);
+    setColor(dim(RED, 64));
+    uint32_t millitime = millis() / 360 % 48;
+    setColorOnFace(dim(team ? BLUE : ORANGE, 150 - 3 * (millitime % 8)), millitime / 8);
   }
 }
 
@@ -263,7 +285,7 @@ void handleEnemyClick() {
   myturn = 1;
   byte stat = random(1);
   setValueSentOnFace((stat + 1) << 4 | stats[stat], foeface);
-  moves=0;
+  moves = 0;
 }
 void handleDeadClick() {
   setValueSentOnAllFaces(ROLLWAKE);
@@ -279,9 +301,6 @@ void handleTeamDoubleClick() {
   setValueSentOnAllFaces(ROLLING);
   handleMessages = &handleGoStatsMessages;
   handleAllFacesChecked = &handleGoStatsAllFacesChecked;
-  handleClick = &nop;
-  handleDoubleClick = &nop;
-  handleLongPress = &nop;
   advance = 0;
 }
 void handleStatsDoubleClick() {
@@ -289,9 +308,6 @@ void handleStatsDoubleClick() {
   setValueSentOnAllFaces(GOTEAM);
   handleMessages = &handleGoTeamMessages;
   handleAllFacesChecked = &handleGoTeamAllFacesChecked;
-  handleClick = &nop;
-  handleDoubleClick = &nop;
-  handleLongPress = &nop;
   advance = 0;
 }
 void handleInertDoubleClick() {
@@ -312,7 +328,7 @@ void handleTeamLongPress() {
   handleLongPress = &setup;
   handleMessages = &handleInertMessages;
   handleAllFacesChecked = &handleInertAllFacesChecked;
-  setValueSentOnAllFaces(team+2);
+  setValueSentOnAllFaces(team + 2);
   animtimer.set(0);
   advance = 0;
   if (moves) {
@@ -429,7 +445,7 @@ void handleInertAllFacesChecked() {
     handleLongPress = &handleStatsDoubleClick;
     handleMessages = handleFoEMessages;
     animtimer.set(0);
-    if (val == team+2 || val == ATTACHEDFRIEND) {
+    if (val == team + 2 || val == ATTACHEDFRIEND) {
       render = &renderFriend;
       handleClick = &handleFriendClick;
       handleAllFacesChecked = &handleFriendAllFacesChecked;
@@ -466,11 +482,11 @@ void handleFriendAllFacesChecked() {
       } else {
         setValueSentOnAllFaces(GIFT);
       }
-      moves=0;
+      moves = 0;
     } else if (val == RECEIPT) {
       animtimer.set(500);
       setValueSentOnAllFaces(RECEIPT2);
-      moves=0;
+      moves = 0;
     } else {
       setValueSentOnAllFaces(ATTACHEDFRIEND);
     }
@@ -489,7 +505,7 @@ void handleEnemyAllFacesChecked() {
   if (numneighbors == 1 && didValueOnFaceChange(foeface)) {
     if (val == RECEIPT) {
       setValueSentOnAllFaces(RECEIPT2);
-      moves=0;
+      moves = 0;
     } else if (val == RECEIPT2) {
       if (myturn) {
         myturn = 0;
@@ -498,7 +514,7 @@ void handleEnemyAllFacesChecked() {
         setValueSentOnAllFaces(RECEIPT2);
       }
     } else if (val & PASS) {
-      moves=0;
+      moves = 0;
       if (val == PASS) {
         handleEnemyClick();
       } else {
@@ -518,7 +534,6 @@ void handleEnemyAllFacesChecked() {
             myturn = 0;
             render = &renderDead;
             handleClick = &handleDeadClick;
-            handleDoubleClick = &handleInertDoubleClick;
             handleMessages = &handleDeadMessages;
             handleAllFacesChecked = &nop;
             setValueSentOnAllFaces(DEAD);
