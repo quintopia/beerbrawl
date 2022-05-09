@@ -86,6 +86,7 @@ byte advance;
 byte numneighbors;
 byte myturn;
 byte symbol;
+byte showstats;
 Timer animtimer;
 Color statcolors[5] = {RED, MAGENTA, YELLOW, GREEN, OFF};
 byte patterns[] =
@@ -203,7 +204,7 @@ void renderMoving() {
   } else if (!animtimer.isExpired()) {
     setColor(YELLOW);
   } else {
-    renderFaces(255, 64, 1 << ((millis() / 150) % 6));
+    renderFaces(64, 255, 1 << ((millis() / 150) % 6));
   }
 }
 
@@ -232,11 +233,15 @@ void renderEnemy() {
 
 void renderDead() {
   uint16_t val = animtimer.getRemaining();
-  if (val > 256) setColor(dim(RED, val / 4));
-  else {
-    setColor(dim(RED, 64));
-    uint32_t millitime = millis() / 360 % 48;
-    setColorOnFace(dim(team ? BLUE : ORANGE, 150 - 3 * (millitime % 8)), millitime / 8);
+  if (showstats && val) {
+    renderStats();
+  } else {
+    if (val > 256) setColor(dim(RED, val / 4));
+    else {
+      setColor(dim(RED, 64));
+      uint32_t millitime = millis() / 360 % 48;
+      setColorOnFace(dim(team ? BLUE : ORANGE, 150 - 3 * (millitime % 8)), millitime / 8);
+    }
   }
 }
 
@@ -309,9 +314,14 @@ void handleStatsDoubleClick() {
   handleMessages = &handleGoTeamMessages;
   handleAllFacesChecked = &handleGoTeamAllFacesChecked;
   advance = 0;
+  showstats = 1;
+  
 }
 void handleInertDoubleClick() {
-  animtimer.set(2000);
+  if (isAlone()) {
+    animtimer.set(2000);
+    showstats = 1;
+  }
 }
 
 //MULTICLICK FUNCS
@@ -441,7 +451,6 @@ void handleInertAllFacesChecked() {
   if (numneighbors == 1) {
     byte val = getLastValueReceivedOnFace(foeface);
     if (val < INERTORANGE || val > ATTACHEDENEMY) return;
-    handleDoubleClick = &nop;
     handleLongPress = &handleStatsDoubleClick;
     handleMessages = handleFoEMessages;
     animtimer.set(0);
@@ -538,6 +547,7 @@ void handleEnemyAllFacesChecked() {
             handleAllFacesChecked = &nop;
             setValueSentOnAllFaces(DEAD);
             animtimer.set(1020);
+            showstats = 0;
           }
         }
       }
@@ -572,6 +582,7 @@ void handleRedieAllFacesChecked() {
     handleMessages = &handleDeadMessages;
     handleAllFacesChecked = &nop;
     setValueSentOnAllFaces(DEAD);
+    showstats = 0;
   }
 }
 
